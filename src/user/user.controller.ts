@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { User } from '@prisma/client';
 
 @Controller('user')
 export class UserController {
@@ -11,8 +13,8 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findAll(@CurrentUser() user: User) {
+    return user;
   }
 
   @Get(':id')

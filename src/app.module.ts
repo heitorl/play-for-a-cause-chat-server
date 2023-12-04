@@ -7,8 +7,22 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 
+import { ConfigModule } from '@nestjs/config';
+import { WebSocketModule } from './websocket/websocket.module';
+import { RedisModule } from 'nestjs-redis';
+
 @Module({
-  imports: [PrismaModule, UserModule, AuthModule],
+  imports: [
+    WebSocketModule,
+    ConfigModule.forRoot(),
+    RedisModule.register({
+      host: 'host.docker.internal',
+      port: 6379,
+    }),
+    PrismaModule,
+    UserModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

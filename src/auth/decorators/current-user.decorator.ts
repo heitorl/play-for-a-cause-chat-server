@@ -3,9 +3,14 @@ import { User } from 'src/user/entities/user.entity';
 import { AuthRequest } from '../models/AuthRequest';
 
 export const CurrentUser = createParamDecorator(
-  (data: unknown, context: ExecutionContext): User => {
-    const request = context.switchToHttp().getRequest<AuthRequest>();
+  (data: unknown, context: ExecutionContext): User | undefined => {
+    try {
+      const request = context.switchToHttp().getRequest<AuthRequest>();
 
-    return request.user;
+      return request.user;
+    } catch (error) {
+      console.error('Erro ao obter usuário atual:', error);
+      return undefined;
+    }
   },
 );

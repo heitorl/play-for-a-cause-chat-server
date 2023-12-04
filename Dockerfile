@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:18-alpine
 # Create app directory
 WORKDIR /app
 
@@ -8,14 +8,14 @@ COPY prisma ./prisma/
 
 # Install app dependencies
 RUN npm install --force
-
+RUN apk --no-cache add build-base
 RUN npx prisma generate
 
 COPY . .
 
 
 
-EXPOSE 3000
+EXPOSE 3333
 CMD [ "npm", "run", "start:dev" ]
 
 

@@ -13,6 +13,12 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(3000);
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
+  await app.listen(3333);
 }
 bootstrap();

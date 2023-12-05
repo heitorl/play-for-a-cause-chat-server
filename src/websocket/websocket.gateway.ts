@@ -24,7 +24,7 @@ export class SocketGateway implements OnGatewayConnection {
   }
 
   @SubscribeMessage('sendMessage')
-  async handlePrivateMessage(client: Socket, payload: any) {
+  async handleMessage(client: Socket, payload: any) {
     console.log('message received on the server:', payload);
 
     const message = {
@@ -35,6 +35,8 @@ export class SocketGateway implements OnGatewayConnection {
 
     const messageString = JSON.stringify(message);
     console.log(messageString);
+
+    client.broadcast.emit('sendMessage', message);
 
     await this.redisService.getClient().rpush('sendMessage', messageString);
   }

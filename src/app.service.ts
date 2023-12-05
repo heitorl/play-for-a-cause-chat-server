@@ -7,7 +7,7 @@ export class AppService {
   async getMessages(): Promise<string[]> {
     const messages = await this.redisService
       .getClient()
-      .lrange('sendMessage', 0, -1);
+      .lrange('sendPublicMessage', 0, -1);
 
     return messages.map((message) => JSON.parse(message));
   }

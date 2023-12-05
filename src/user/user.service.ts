@@ -26,14 +26,20 @@ export class UserService {
     }
   }
 
+  async findAll() {
+    try {
+      const users = await this.prisma.user.findMany();
+      return users;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      throw new Error('Failed to fetch users');
+    }
+  }
+
   findByEmail(email: string) {
     return this.prisma.user.findUnique({
       where: { email },
     });
-  }
-
-  findAll() {
-    return `This action returns all user`;
   }
 
   findOne(id: number) {

@@ -11,8 +11,12 @@ export class UserController {
   @Post()
   @IsPublic()
   async create(@Body() createUserDto: CreateUserDto) {
-    console.log('hello do controller');
     return await this.userService.create(createUserDto);
+  }
+
+  @Get('all')
+  async findAll() {
+    return await this.userService.findAll();
   }
 
   @Get()
@@ -23,5 +27,10 @@ export class UserController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
+  }
+
+  @Get(':email')
+  findByEmail(@Param('email') email: string) {
+    return this.userService.findByEmail(email);
   }
 }

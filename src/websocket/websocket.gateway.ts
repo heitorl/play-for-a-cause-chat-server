@@ -18,7 +18,6 @@ export class SocketGateway implements OnGatewayConnection {
   handleConnection(client: Socket) {
     console.log(`Connected: ${client.id}`);
 
-    // Aqui você pode verificar o tipo de autenticação que deseja
     if (client.handshake.auth.type === 'public') {
       this.handlePublicConnection(client);
     } else if (client.handshake.auth.type === 'private') {
@@ -30,12 +29,10 @@ export class SocketGateway implements OnGatewayConnection {
   }
 
   private handlePublicConnection(client: Socket) {
-    // Lógica específica para conexão pública
     console.log('Public connection', client.id);
   }
 
   private handlePrivateConnection(client: Socket) {
-    // Lógica específica para conexão privada
     console.log('Private connection', client.id);
   }
 
@@ -85,8 +82,11 @@ export class SocketGateway implements OnGatewayConnection {
       client.broadcast.emit('sendPrivateMessage', message);
 
       const redisClient = await this.redisService.getClient();
-      await redisClient.rpush(`user:${fromUserId}:messages`, messageString);
-      await redisClient.rpush(`user:${toUserId}:messages`, messageString);
+      await redisClient.zadd(
+        `private:messages:${fromUserId}:${toUserId}`,
+        message.timestamp.getTime(),
+        messageString,
+      );
 
       const toUserSocket = this.server.sockets.sockets.get(toUserId);
 

@@ -18,21 +18,36 @@ export class AppService {
   ): Promise<string[]> {
     const redisClient = await this.redisService.getClient();
 
-    const messages1 = await redisClient.lrange(
-      `user:${userId1}:messages`,
+    const messages1 = await redisClient.zrange(
+      `private:messages:${userId1}:${userId2}`,
       0,
       -1,
+      'WITHSCORES',
     );
-    const messages2 = await redisClient.lrange(
-      `user:${userId2}:messages`,
+    const messages2 = await redisClient.zrange(
+      `private:messages:${userId2}:${userId1}`,
       0,
       -1,
+      'WITHSCORES',
     );
 
-    const allMessages = [...messages1, ...messages2]
-      .map((message) => JSON.parse(message))
-      .sort((a, b) => a.timestamp - b.timestamp);
+    const allMessages: Array<{ message: any; score: number }> = [];
+    for (let i = 0; i < messages1.length; i += 2) {
+      allMessages.push({
+        message: JSON.parse(messages1[i]),
+        score: parseFloat(messages1[i + 1]),
+      });
+    }
+    for (let i = 0; i < messages2.length; i += 2) {
+      allMessages.push({
+        message: JSON.parse(messages2[i]),
+        score: parseFloat(messages2[i + 1]),
+      });
+    }
 
-    return allMessages;
+    allMessages.sort((a, b) => a.score - b.score);
+
+    const formattedMessages = allMessages.map((item) => item.message);
+    return formattedMessages;
   }
 }

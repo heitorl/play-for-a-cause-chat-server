@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { WebSocketModule } from './websocket/websocket.module';
 import { RedisModule } from 'nestjs-redis';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { RedisModule } from 'nestjs-redis';
     PrismaModule,
     UserModule,
     AuthModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [

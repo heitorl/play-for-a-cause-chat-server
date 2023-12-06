@@ -54,7 +54,7 @@ export class SocketGateway implements OnGatewayConnection {
     };
 
     const messageString = JSON.stringify(message);
-    console.log(messageString);
+    console.log(messageString, 'msssssg');
 
     client.broadcast.emit('sendPublicMessage', message);
 
@@ -66,28 +66,31 @@ export class SocketGateway implements OnGatewayConnection {
   @SubscribeMessage('sendPrivateMessage')
   async handlePrivateMessage(client: Socket, payload: any) {
     try {
-      const { content, toUserId } = payload;
+      const { content, toUser, userName } = payload;
+
+      const toUserId = toUser.id;
 
       const fromUserId = client.handshake.auth.userId;
 
       const message = {
+        userName,
         content,
         timestamp: new Date(),
         fromUserId,
-        toUserId: toUserId.id,
+        toUserId,
       };
 
       const messageString = JSON.stringify(message);
-      console.log('msg', messageString);
+
+      client.broadcast.emit('sendPrivateMessage', message);
 
       const redisClient = await this.redisService.getClient();
       await redisClient.rpush(`user:${fromUserId}:messages`, messageString);
       await redisClient.rpush(`user:${toUserId}:messages`, messageString);
 
-      const toUserSocket = this.server.sockets.sockets.get(toUserId.id);
-      console.log(toUserSocket, 'destination');
+      const toUserSocket = this.server.sockets.sockets.get(toUserId);
+
       if (toUserSocket) {
-        console.log('MSG ENVIADAA');
         toUserSocket.emit('sendPrivateMessage', message);
       }
     } catch (error) {

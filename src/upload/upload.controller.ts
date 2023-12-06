@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   Param,
   Patch,
   UploadedFile,
@@ -21,5 +22,12 @@ export class UploadController {
   ) {
     console.log(file.buffer);
     return await this.uploadService.upload(userId, file);
+  }
+
+  @Get('avatar/:userId')
+  async getUserAvatar(@Param('userId') userId: string) {
+    const blobUrl = await this.uploadService.getAvatar(userId);
+
+    return { avatarUrl: blobUrl };
   }
 }

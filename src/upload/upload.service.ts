@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { FileDTO } from './upload.dto';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
@@ -42,6 +42,22 @@ export class UploadService {
     } catch (error) {
       console.error('Error uploading file:', error);
       throw new Error('Failed to upload file');
+    }
+  }
+
+  async getAvatar(userId: string) {
+    const filename = await this.userService.getUserAvatarFilename(userId);
+    console.log(filename, 'filename');
+    if (!filename) {
+      throw new Error('Avatar not found');
+    }
+
+    try {
+      const avatarUrl = `https://${process.env.BUCKET}.s3.${process.env.REGION}.amazonaws.com/avatars/${filename}`;
+      return avatarUrl;
+    } catch (error) {
+      console.error('Error getting user avatar:', error);
+      throw new NotFoundException('User avatar not found');
     }
   }
 }

@@ -58,4 +58,13 @@ export class UserService {
       data: { filename: newFilename },
     });
   }
+
+  async getUserAvatarFilename(userId: string): Promise<string | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { filename: true },
+    });
+
+    return user?.filename || null;
+  }
 }

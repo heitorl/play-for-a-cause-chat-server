@@ -8,6 +8,7 @@ export interface IUserPayload {
   id: string;
   email: string;
   name: string;
+  filename: string | null;
   iat?: number;
   exp?: number;
 }
@@ -20,11 +21,11 @@ export class AuthService {
   ) {}
 
   login(user: User) {
-    console.log('ntrou user service 1');
     const payload: IUserPayload = {
       id: user.id,
       email: user.email,
       name: user.name,
+      filename: user.filename,
     };
 
     const token = this.jwtService.sign(payload);

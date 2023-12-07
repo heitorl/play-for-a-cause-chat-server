@@ -46,13 +46,13 @@ export class UploadService {
   }
 
   async getAvatar(userId: string) {
-    const filename = await this.userService.getUserAvatarFilename(userId);
-
-    if (!filename) {
-      throw new Error('Avatar not found');
-    }
-
+    const undefinedFile = '06c87ec4-9fea-4c38-b267-d69e1d376d79-undefined.png';
     try {
+      const filename = await this.userService.getUserAvatarFilename(userId);
+
+      if (!filename) {
+        return `https://${process.env.BUCKET}.s3.${process.env.REGION}.amazonaws.com/avatars/${undefinedFile}`;
+      }
       const avatarUrl = `https://${process.env.BUCKET}.s3.${process.env.REGION}.amazonaws.com/avatars/${filename}`;
       return avatarUrl;
     } catch (error) {

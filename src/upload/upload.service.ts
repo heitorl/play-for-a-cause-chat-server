@@ -47,7 +47,7 @@ export class UploadService {
 
   async getAvatar(userId: string) {
     const filename = await this.userService.getUserAvatarFilename(userId);
-    
+
     if (!filename) {
       throw new Error('Avatar not found');
     }

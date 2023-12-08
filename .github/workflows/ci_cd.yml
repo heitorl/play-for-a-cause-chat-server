@@ -18,7 +18,20 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-
+  #aws
+  ACCESS_SECRET_KEY: ${{ secrets.ACCESS_SECRET_KEY }}
+  ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
+  BUCKET: ${{ secrets.BUCKET }}
+  REGION: sa-east-1
+  #jwt
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  #db
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+  POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  DB_PORT: 542
+  
 
 jobs:
   ci:

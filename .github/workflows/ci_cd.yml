@@ -133,4 +133,4 @@ jobs:
         with:
           service: ${{env.SERVICE}}
           image: ${{needs.ci.outputs.tags}}
-          region: sa-east-1
+          region: us-central1

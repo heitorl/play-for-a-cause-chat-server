@@ -32,7 +32,7 @@ env:
   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
   DB_PORT: ${{ secrets.DB_PORT }}
-
+  PORT: 3333
   SERVICE: nest
   
 

@@ -32,7 +32,7 @@ env:
   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
   DB_PORT: ${{ secrets.DB_PORT }}
-  PORT: 3333
+  PORT: ${{ secrets.PORT }}
   SERVICE: nest
   
 
@@ -134,4 +134,4 @@ jobs:
           service: ${{env.SERVICE}}
           image: ${{needs.ci.outputs.tags}}
           region: us-central1
-          args: deploy --image ${{needs.ci.outputs.tags}} --port 3333
+          port: ${{env.PORT}}

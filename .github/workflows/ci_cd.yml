@@ -32,12 +32,16 @@ env:
   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
   DB_PORT: ${{ secrets.DB_PORT }}
+
+  SERVICE: nest
   
 
 jobs:
   ci:
 
     runs-on: ubuntu-latest
+    outputs:
+      tags: ${{steps.meta.outputs.tags}}
     permissions:
       contents: read
       packages: write
@@ -109,3 +113,19 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+  
+  cd:  
+    run-on: ubuntu-latest
+    needs: ci
+  
+    steps:    
+      - name: Checkout repository
+        uses: actions/checkout@v3
+    
+      - id: 'auth'
+        uses: 'google-github-actions/deploy-cloudrun@v0'
+        with:
+          service: ${{env.SERVICE}}
+          image: ${{needs.ci.outputs.tags}}
+          region: us-centrali

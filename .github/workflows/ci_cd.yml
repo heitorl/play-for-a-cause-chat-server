@@ -122,6 +122,9 @@ jobs:
     steps:    
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Autenticar o Google Cloud SDK
+        run: gcloud auth application-default login
     
       - id: 'auth'
         uses: 'google-github-actions/deploy-cloudrun@v0'

@@ -134,4 +134,4 @@ jobs:
           service: ${{env.SERVICE}}
           image: ${{needs.ci.outputs.tags}}
           region: us-central1
-          flags: "--port 3333 --update-labels managed-by=github-actions,commit-sha=ecfb07d5832b3595478c6419043a85e6c756a909,dcbcfb83efda0552f8676bfc401b896520097879"
+          flags: "--port 3333 --update-labels managed-by=github-actions"

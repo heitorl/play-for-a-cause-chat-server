@@ -133,5 +133,6 @@ jobs:
         with:
           service: ${{env.SERVICE}}
           image: ${{needs.ci.outputs.tags}}
-          region: us-central1
+          region: us-central1      
+          containerPort: 3333
 

@@ -134,5 +134,5 @@ jobs:
           service: ${{env.SERVICE}}
           image: ${{needs.ci.outputs.tags}}
           region: us-central1
-          port: 3333 
+          
 

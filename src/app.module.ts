@@ -17,8 +17,9 @@ import { UploadModule } from './upload/upload.module';
     WebSocketModule,
     ConfigModule.forRoot(),
     RedisModule.register({
-      host: 'host.docker.internal',
-      port: 6379,
+      host: process.env.redis_host,
+      port: 40507,
+      password: process.env.redis_password,
     }),
     PrismaModule,
     UserModule,

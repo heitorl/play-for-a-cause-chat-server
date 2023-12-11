@@ -3,17 +3,14 @@ version: '3.8'
 services:
   nest-api-prod:
     command: sh -c "npx prisma migrate dev && npm run start:dev"
-    container_name: nest-api-prod
+    container_name: nest-api
     build:
       context: .
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile.dev
     ports:
       - 3333:3333
     volumes:
-      - .:/home/node/app
-        /home/node/app/dist
-        /home/node/app/node_modules
-
+      - .:/app
     depends_on:
       - postgres
     env_file:

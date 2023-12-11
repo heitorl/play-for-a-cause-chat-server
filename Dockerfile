@@ -15,6 +15,7 @@ COPY --chown=node:node . .
 RUN npm install --force
 
 RUN npx prisma generate
+RUN npx prisma migrate deploy
 RUN npm run build
 EXPOSE 3333
 CMD [ "npm", "run", "start:prod" ]

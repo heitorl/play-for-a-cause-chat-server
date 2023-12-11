@@ -14,11 +14,11 @@ COPY --chown=node:node . .
 # Install app dependencies
 RUN npm install --force
 
-RUN npx prisma generate
-RUN npx prisma migrate deploy
 RUN npm run build
+
+RUN npx prisma generate
 EXPOSE 3333
-CMD [ "npm", "run", "start:prod" ]
+CMD [  "npm", "run", "start:migrate:prod" ]
 
 
 
